@@ -1,48 +1,76 @@
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from "react-native";
 import React, { useState } from "react";
 import Card from "../componentes/Card";
 import Colors from "../constants/Colors";
 import Input from "../componentes/Input";
 
-const StartGameScreen = () => {
+const StartGameScreen = ({ onStartGame }) => {
   const [value, setValue] = useState("");
+  const [confirmed, setConfirmed] = useState(false)
+  const [selectedNumber, setSelectedNumber] = useState('')
 
+  const handleConfirmation = () => {
+    const newValue = parseInt(value)
+    if (newValue === NaN || newValue <= 0 || newValue > 99) return
+    setConfirmed(true)
+    setSelectedNumber(newValue)
+    setValue('')
+  }
   const handleInput = (text) => {
     console.log(text);
     setValue(text.replace(/[^0-9]/g, ""));
   };
+
+  const handleResetInput = () => {
+    setValue("")
+    setConfirmed(false)
+  }
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Start Game</Text>
-      <Card>
-        <Text style={styles.subtitle}> Chose a number</Text>
-        <Input
-          blurOnSubmit
-          autocapitalize="none"
-          autoCorrect={false}
-          keyboardType={"numeric"}
-          maxLength={2}
-          value={value}
-          onChangeText={handleInput}
-        />
-        <View style={styles.buttonContainer}>
-          <View style={styles.cleanButton}>
-            <Button
-              title="Clean"
-              onPress={() => console.log("limpiar")}
-              color={"#7D7D8B"}
+    <KeyboardAvoidingView style={{ flex: 1 }}>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Start Game</Text>
+          <Card>
+            <Text style={styles.subtitle}> Chose a number</Text>
+            <Input
+              blurOnSubmit
+              autocapitalize="none"
+              autoCorrect={false}
+              keyboardType={"numeric"}
+              maxLength={2}
+              value={value}
+              onChangeText={handleInput}
             />
-          </View>
-          <View style={styles.confirmButton}>
-            <Button
-              title="Confirm"
-              onPress={() => console.log("confirmar")}
-              color={"#ffff"}
-            />
-          </View>
+            <View style={styles.buttonContainer}>
+              <View style={styles.cleanButton}>
+                <Button
+                  title="Clean"
+                  onPress={handleResetInput}
+                />
+              </View>
+              <View style={styles.confirmButton}>
+                <Button
+                  title="Confirm"
+                  onPress={handleConfirmation}
+                />
+              </View>
+            </View>
+          </Card>
+          {
+            confirmed && (
+              <Card newStyles={styles.selectedCard}>
+                <Text style={{ color: "white" }}> Your number is:</Text>
+                <View>
+                  <Text style={styles.selectNumberSelected}>{selectedNumber}</Text>
+                  <View style={styles.confirmButton} >
+                    <Button title="Start Game" onPress={() => onStartGame(selectedNumber)} />
+                  </View>
+                </View>
+              </Card>
+            )}
         </View>
-      </Card>
-    </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -80,4 +108,11 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.actionColor,
     borderRadius: 10,
   },
+  selectedCard: {
+    marginTop: 50,
+    width: "50%",
+  },
+  selectNumberSelected: {
+    color: "white", marginVertical: 20, fontSize: 25, textAlign: "center"
+  }
 });
