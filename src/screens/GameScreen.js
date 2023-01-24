@@ -4,15 +4,13 @@ import Card from '../componentes/Card'
 import colors from '../constants/Colors'
 
 
-const GameScreen = () => {
+const GameScreen = ({handleResult}) => {
   const  [currentGuess, setCurrentGuess] = useState()
 
   useEffect(() => {
     setCurrentGuess(Math.floor(Math.random() * (99 -1) +1 ))
-
   }, [])
   
- 
   return (
     <View style={styles.container}>
       <Text style={styles.textColor}>La suposicion del oponente</Text>
@@ -20,11 +18,11 @@ const GameScreen = () => {
       <Card newStyles={styles.buttonContainer}>
         <Button
           title="Menor"
-          onPress={() => console.log("menor")}
+          onPress={() => handleResult("lower", currentGuess)}
         />
         <Button
           title="Mayor"
-          onPress={() =>  console.log("mayor")}
+          onPress={() => handleResult("higher", currentGuess)}
         />
       </Card>
     </View>

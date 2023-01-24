@@ -1,13 +1,25 @@
-import { Button, StyleSheet, Text, View, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from "react-native";
-import React, { useState } from "react";
+import { Button, StyleSheet, Text, View, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Dimensions, Platform, ScrollView} from "react-native";
+import React, { useEffect, useState } from "react";
 import Card from "../componentes/Card";
 import Colors from "../constants/Colors";
 import Input from "../componentes/Input";
+
+
+const width = Dimensions.get("window").width
+const height = Dimensions.get("window").height
+const OS =  Platform.OS
 
 const StartGameScreen = ({ onStartGame }) => {
   const [value, setValue] = useState("");
   const [confirmed, setConfirmed] = useState(false)
   const [selectedNumber, setSelectedNumber] = useState('')
+
+
+  useEffect(()=> {
+ console.log(width,height, OS)
+  },[])
+
+
 
   const handleConfirmation = () => {
     const newValue = parseInt(value)
@@ -26,7 +38,8 @@ const StartGameScreen = ({ onStartGame }) => {
     setConfirmed(false)
   }
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }}>
+    <KeyboardAvoidingView  style={{ flex: 1 }} behavior={  OS ==="ios" ? "padding" : "height"}>
+      <ScrollView style={{backgroundColor: Colors.primary}}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>
           <Text style={styles.title}>Start Game</Text>
@@ -70,6 +83,7 @@ const StartGameScreen = ({ onStartGame }) => {
             )}
         </View>
       </TouchableWithoutFeedback>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };
@@ -85,7 +99,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    marginVertical: 10,
+    marginVertical: height > 900 ? 20 : 10,
     color: "white",
   },
   subtitle: {
@@ -93,7 +107,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
-    width: "100%",
+    width: width < 400 ? "100%" : 250,
     justifyContent: "space-between",
     paddingHorizontal: 15,
     marginTop: 20,
