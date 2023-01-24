@@ -25,7 +25,7 @@ export default function App() {
 
 
   const handleFinishGame = ({ selection, number }) => {
-    if ((selection === "lower" && userNumber < number) || (selection === "higher" && userNumber > number)) {
+    if ((selection === "lower" && userNumber < number) || (selection === "geater" && userNumber > number)) {
       setResult("Win")
     } else {
       setResult("Lose")
@@ -36,7 +36,7 @@ export default function App() {
 
   let content = <StartGameScreen onStartGame={handleStartGame} />
   if (userNumber && winOrLose === true) {
-    content= <ResultScreen/>
+    content= <ResultScreen result={result}/>
   }else if(userNumber){
      content = <GameScreen handleResult={handleFinishGame} />
   }

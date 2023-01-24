@@ -22,10 +22,10 @@ const StartGameScreen = ({ onStartGame }) => {
 
 
   const handleConfirmation = () => {
-    const newValue = parseInt(value)
-    if (newValue === NaN || newValue <= 0 || newValue > 99) return
+    const choseNumber  = parseInt(value)
+    if (choseNumber  === NaN || choseNumber  <= 0 || choseNumber  > 99) return
     setConfirmed(true)
-    setSelectedNumber(newValue)
+    setSelectedNumber(choseNumber)
     setValue('')
   }
   const handleInput = (text) => {

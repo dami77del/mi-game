@@ -8,7 +8,7 @@ const GameScreen = ({handleResult}) => {
   const  [currentGuess, setCurrentGuess] = useState()
 
   useEffect(() => {
-    setCurrentGuess(Math.floor(Math.random() * (99 -1) +1 ))
+    setCurrentGuess(Math.floor(Math.random() * (100 -1) +1 ))
   }, [])
   
   return (
